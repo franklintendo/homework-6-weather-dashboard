@@ -20,7 +20,7 @@
         </div>
         <div class="row content-row">
             <div class="col-3 bg-light pt-3">
-                <h4>Search for a city:</h4>
+                <h5>Search for a city:</h5>
                 <form>
                     <div class="form-group input-group">
                         <input type="text" class="form-control" id="search-city" placeholder="Enter city here">
@@ -31,24 +31,123 @@
                         </div>
                     </div>
                 </form>
+                <!-- Seach History -->
+                <div class="card">
+                    <ul class="list-group list-group-flush" id="search-history-list">
+                        <!-- <li class="list-group-item"></li> -->
+                    </ul>
+                </div>
             </div>
             <div class="col-9">
                 <div class="row">
                     <div class="col-12">
-                        <h2>City Information</h2>
+                        <div class="city-info border rounded my-3 px-3 py-3">
+                            <h2>City Information</h2>
 
-                        <p>Temperature:</p>
-                        <p>Humidity:</p>
-                        <p>Wind Speed: </p>
+                            <p>Temperature:</p>
+                            <p>Humidity:</p>
+                            <p>Wind Speed: </p>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <h3>5-Day Forecast</h3>
+                        
+                    </div>
+                    <div class="col-2">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title">Date</h5>
+                            <i class="fa fa-sun"></i>
+                            <p class="card-text">Temp: </p>
+                            <p class="card-text">Humidity: </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Easy access to elements
+        var searchHistoryList = $('#search-history-list');
+        var searchCityInput = $("#search-city");
+        var searchCityButton = $("#search-city-button");
+
+        // Get access to the OpenWeather API
+        var APIkey = "a17e1499228be1f9c294ac18b234c7d7";
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + APIkey;
+
+        // Easy access to data
+        var cityList = [];
+
+        // $.ajax({
+        //     url: ,
+        //     method: "GET"
+        // }).then(function(response){
+
+        // });
+
+        // Hitting enter while input is focused will trigger
+        // value added to search history
+        $(document).on("submit", function(event){
+            event.preventDefault();
+            searchHistory();
+        })
+
+        // Clicking the search button will trigger
+        // value added to search history
+        searchCityButton.on("click", function(event){
+            event.preventDefault();
+            searchHistory();     
+        });
+        
+        function searchHistory() {
+            // Grab value entered into search bar 
+            var searchValue = searchCityInput.val().trim();
+            
+            // If there are characters entered into the search bar
+            if (searchValue) {
+                // Place value in the array of cities
+                // if it is a new entry
+                if (cityList.indexOf(searchValue) === -1) {
+                    cityList.push(searchValue);
+
+                    // List all of the cities in user history
+                    listArray();
+                } else {
+                    // Remove the existing value from
+                    // the array
+                    var removeIndex = cityList.indexOf(searchValue);
+                    cityList.splice(removeIndex, 1);
+
+                    // Push the value again to the array
+                    cityList.push(searchValue);
+
+                    // list all of the cities in user history
+                    // so the old entry appears at the top
+                    // of the search history
+                    listArray();
+                }
+            }
+            console.log(cityList);
+        }
+
+        // List the array into the search history sidebar
+        function listArray() {
+            // Empty out the elements in the sidebar
+            searchHistoryList.empty();
+            // Repopulate the sidebar with each city
+            // in the array
+            cityList.forEach(function(city){
+                var searchHistoryItem = $('<li class="list-group-item">');
+                searchHistoryItem.text(city);
+                searchHistoryList.prepend(searchHistoryItem);
+            });
+        }
+
+        console.log(cityList);
+    </script>
 </body>
 </html>
