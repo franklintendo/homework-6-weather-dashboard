@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather Dashboard</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Assets/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row navbar navbar-dark bg-dark">
+            <div class="col-12 text-center">
+                <h1 class="navbar-brand pb-0 px-0">Weather Dashboard</h1>
+            </div>
+        </div>
+        <div class="row content-row">
+            <div class="col-3 bg-light pt-3">
+                <h4>Search for a city:</h4>
+                <form>
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" id="search-city" placeholder="Enter city here">
+                        <div class="input-group-append">
+                            <button class="btn btn-info" type="button" id="search-city-button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>City Information</h2>
+
+                        <p>Temperature:</p>
+                        <p>Humidity:</p>
+                        <p>Wind Speed: </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>5-Day Forecast</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
