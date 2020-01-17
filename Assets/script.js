@@ -8,6 +8,7 @@ var currentCity = $("#current-city");
 var currentTemp = $("#current-temp");
 var currentHumidity = $("#current-humidity");
 var currentWindSpeed = $("#current-wind-speed");
+var UVindex = $("#uv-index");
 
 // Get access to the OpenWeather API
 var APIkey = "a17e1499228be1f9c294ac18b234c7d7";
@@ -18,8 +19,6 @@ var cityList = [];
 // Check if search history exists when page loads
 initalizeHistory();
 showClear();
-
-
 
 // Hitting enter while input is focused will trigger
 // value added to search history
@@ -32,7 +31,7 @@ $(document).on("submit", function(){
     currentConditionsRequest(searchValue)
     searchHistory(searchValue);
     searchCityInput.val(""); 
-})
+});
 
 // Clicking the search button will trigger
 // value added to search history
@@ -57,6 +56,16 @@ clearHistoryButton.on("click", function(){
     $(this).addClass("hide");
 });
 
+// Clicking on a button in the search history sidebar
+// will populate the dashboard with info on that city
+$('.city-btn').on("click", function() {
+    // console.log($(this).data("value"));
+    var value = $(this).data("value");
+    currentConditionsRequest(value);
+    
+});
+
+
 
 // Request Open Weather API based on user input
 function currentConditionsRequest(searchValue) {
@@ -69,11 +78,26 @@ function currentConditionsRequest(searchValue) {
         url: queryURL,
         method: "GET"
     }).then(function(response){
-        console.log(response);
+        // console.log(response);
         currentCity.text(response.name);
         currentTemp.text(response.main.temp);
-        currentHumidity.text(response.main.humidity);
-        currentWindSpeed .text(response.wind.speed);
+        currentTemp.append("&deg;F");
+        currentHumidity.text(response.main.humidity + "%");
+        currentWindSpeed.text(response.wind.speed + "MPH");
+
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
+
+        var UVurl = "http://api.openweathermap.org/data/2.5/uvi?&lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
+        $.ajax({
+            url: UVurl,
+            method: "GET"
+        }).then(function(response){
+            // console.log("UV call: ")
+            // console.log(response);
+            UVindex.text(response.value);
+        });
+
     });
 
 }
@@ -119,7 +143,8 @@ function listArray() {
     // Repopulate the sidebar with each city
     // in the array
     cityList.forEach(function(city){
-        var searchHistoryItem = $('<li class="list-group-item">');
+        var searchHistoryItem = $('<li class="list-group-item city-btn">');
+        searchHistoryItem.attr("data-value", city);
         searchHistoryItem.text(city);
         searchHistoryList.prepend(searchHistoryItem);
     });
