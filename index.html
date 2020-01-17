@@ -35,7 +35,9 @@
                 <div class="card">
                     <ul class="list-group list-group-flush" id="search-history-list">
                         <!-- <li class="list-group-item"></li> -->
+                        
                     </ul>
+                    <button id="clear-history" class="btn btn-sm btn-secondary hide">Clear History</button>
                 </div>
             </div>
             <div class="col-9">
@@ -74,6 +76,7 @@
         var searchHistoryList = $('#search-history-list');
         var searchCityInput = $("#search-city");
         var searchCityButton = $("#search-city-button");
+        var clearHistoryButton = $("#clear-history");
 
         // Get access to the OpenWeather API
         var APIkey = "a17e1499228be1f9c294ac18b234c7d7";
@@ -81,6 +84,10 @@
 
         // Easy access to data
         var cityList = [];
+
+        // Check if search history exists when page loads
+        initalizeHistory();
+        showClear();
 
         // $.ajax({
         //     url: ,
@@ -94,13 +101,25 @@
         $(document).on("submit", function(event){
             event.preventDefault();
             searchHistory();
+            searchCityInput.val(""); 
         })
 
         // Clicking the search button will trigger
         // value added to search history
         searchCityButton.on("click", function(event){
             event.preventDefault();
-            searchHistory();     
+            searchHistory();    
+            searchCityInput.val(""); 
+        });
+
+        // Clear the sidebar of past cities searched
+        clearHistoryButton.on("click", function(){
+            // Empty out the  city list array
+            cityList = [];
+            // Update city list history in local storage
+            listArray();
+
+            $(this).addClass("hide");
         });
         
         function searchHistory() {
@@ -116,6 +135,7 @@
 
                     // List all of the cities in user history
                     listArray();
+                    clearHistoryButton.removeClass("hide");
                 } else {
                     // Remove the existing value from
                     // the array
@@ -129,6 +149,7 @@
                     // so the old entry appears at the top
                     // of the search history
                     listArray();
+                    clearHistoryButton.removeClass("hide");
                 }
             }
             console.log(cityList);
@@ -145,8 +166,30 @@
                 searchHistoryItem.text(city);
                 searchHistoryList.prepend(searchHistoryItem);
             });
+            // Update city list history in local storage
+            localStorage.setItem("cities", JSON.stringify(cityList));
         }
 
+        // Grab city list string from local storage
+        // and update the city list array
+        // for the search history sidebar
+        function initalizeHistory() {
+            if (localStorage.getItem("cities")) {
+                cityList = JSON.parse(localStorage.getItem("cities"));
+                // cityList = cityListString.split(",");
+                console.log(cityList);
+                listArray();
+            }
+        }
+
+        // Check to see if there are elements in
+        // search history sidebar in order to show clear history btn
+        function showClear() {
+            if (searchHistoryList.text() !== "") {
+                clearHistoryButton.removeClass("hide");
+            }
+        }
+        // console.log(searchHistoryList.text());
         console.log(cityList);
     </script>
 </body>
