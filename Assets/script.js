@@ -118,6 +118,7 @@ function currentConditionsRequest(searchValue) {
                 var forecastCard = $("<div class='card'>");
                 var forecastCardBody = $("<div class='card-body'>");
                 var forecastDate = $("<h5 class='card-title'>");
+                var forecastIcon = $("<img>");
                 var forecastTemp = $("<p class='card-text mb-0'>");
                 var forecastHumidity = $("<p class='card-text mb-0'>");
 
@@ -127,10 +128,12 @@ function currentConditionsRequest(searchValue) {
                 forecastCard.append(forecastCardBody);
 
                 forecastCardBody.append(forecastDate);
+                forecastCardBody.append(forecastIcon);
                 forecastCardBody.append(forecastTemp);
                 forecastCardBody.append(forecastHumidity);
                 
-
+                forecastIcon.attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
+                forecastIcon.attr("alt", response.list[i].weather[0].main)
                 forecastDate.text(response.list[i].dt_txt);
                 forecastTemp.text(response.list[i].main.temp);
                 forecastTemp.prepend("Temp: ");
