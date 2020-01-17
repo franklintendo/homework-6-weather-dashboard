@@ -165,7 +165,9 @@ function initalizeHistory() {
         listArray();
         // Display the last city viewed
         // if page is refreshed
-        currentConditionsRequest(cityList[lastIndex]);
+        if (cityList.length !== 0) {
+            currentConditionsRequest(cityList[lastIndex]);
+        }
     }
 }
 
