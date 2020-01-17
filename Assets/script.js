@@ -16,6 +16,10 @@ var APIkey = "a17e1499228be1f9c294ac18b234c7d7";
 // Easy access to data
 var cityList = [];
 
+// Find current date and display in title
+var currentDate = moment().format('L');
+$("#current-date").text("(" + currentDate + ")");
+
 // Check if search history exists when page loads
 initalizeHistory();
 showClear();
@@ -82,6 +86,8 @@ function currentConditionsRequest(searchValue) {
     }).then(function(response){
         console.log(response);
         currentCity.text(response.name);
+        currentCity.append("<small class='text-muted' id='current-date'>");
+        $("#current-date").text("(" + currentDate + ")");
         currentCity.append("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='" + response.weather[0].main + "' />" )
         currentTemp.text(response.main.temp);
         currentTemp.append("&deg;F");
@@ -114,7 +120,11 @@ function currentConditionsRequest(searchValue) {
             console.log(response);
             $('#five-day-forecast').empty();
             for (var i = 1; i < response.list.length; i+=8) {
-                var forecastCol = $("<div class='col-12 col-md-6 col-lg-2 forecast-day'>");
+
+                var forecastDateString = moment(response.list[i].dt_txt).format("L");
+                console.log(forecastDateString);
+
+                var forecastCol = $("<div class='col-12 col-md-6 col-lg forecast-day mb-3'>");
                 var forecastCard = $("<div class='card'>");
                 var forecastCardBody = $("<div class='card-body'>");
                 var forecastDate = $("<h5 class='card-title'>");
@@ -134,7 +144,7 @@ function currentConditionsRequest(searchValue) {
                 
                 forecastIcon.attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
                 forecastIcon.attr("alt", response.list[i].weather[0].main)
-                forecastDate.text(response.list[i].dt_txt);
+                forecastDate.text(forecastDateString);
                 forecastTemp.text(response.list[i].main.temp);
                 forecastTemp.prepend("Temp: ");
                 forecastTemp.append("&deg;F");
@@ -142,9 +152,9 @@ function currentConditionsRequest(searchValue) {
                 forecastHumidity.prepend("Humidity: ");
                 forecastHumidity.append("%");
                 
-                console.log(response.list[i].dt_txt);
-                console.log(response.list[i].main.temp);
-                console.log(response.list[i].main.humidity);
+                // console.log(response.list[i].dt_txt);
+                // console.log(response.list[i].main.temp);
+                // console.log(response.list[i].main.humidity);
 
             }
         });
