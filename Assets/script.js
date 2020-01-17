@@ -73,6 +73,7 @@ function currentConditionsRequest(searchValue) {
     
     // Formulate URL for AJAX api call
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + APIkey;
+    
 
     // Make AJAX call
     $.ajax({
@@ -81,6 +82,7 @@ function currentConditionsRequest(searchValue) {
     }).then(function(response){
         console.log(response);
         currentCity.text(response.name);
+        currentCity.append("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='" + response.weather[0].main + "' />" )
         currentTemp.text(response.main.temp);
         currentTemp.append("&deg;F");
         currentHumidity.text(response.main.humidity + "%");
@@ -88,9 +90,10 @@ function currentConditionsRequest(searchValue) {
 
         var lat = response.coord.lat;
         var lon = response.coord.lon;
-        var countryCode = response;
+        
 
         var UVurl = "http://api.openweathermap.org/data/2.5/uvi?&lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
+        // AJAX Call for UV index
         $.ajax({
             url: UVurl,
             method: "GET"
@@ -100,7 +103,52 @@ function currentConditionsRequest(searchValue) {
             UVindex.text(response.value);
         });
 
+        var countryCode = response.sys.country;
+        var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + APIkey + "&lat=" + lat +  "&lon=" + lon;
+        
+        // AJAX call for 5-day forecast
+        $.ajax({
+            url: forecastURL,
+            method: "GET"
+        }).then(function(response){
+            console.log(response);
+            $('#five-day-forecast').empty();
+            for (var i = 1; i < response.list.length; i+=8) {
+                var forecastCol = $("<div class='col-12 col-md-6 col-lg-2 forecast-day'>");
+                var forecastCard = $("<div class='card'>");
+                var forecastCardBody = $("<div class='card-body'>");
+                var forecastDate = $("<h5 class='card-title'>");
+                var forecastTemp = $("<p class='card-text mb-0'>");
+                var forecastHumidity = $("<p class='card-text mb-0'>");
+
+
+                $('#five-day-forecast').append(forecastCol);
+                forecastCol.append(forecastCard);
+                forecastCard.append(forecastCardBody);
+
+                forecastCardBody.append(forecastDate);
+                forecastCardBody.append(forecastTemp);
+                forecastCardBody.append(forecastHumidity);
+                
+
+                forecastDate.text(response.list[i].dt_txt);
+                forecastTemp.text(response.list[i].main.temp);
+                forecastTemp.prepend("Temp: ");
+                forecastTemp.append("&deg;F");
+                forecastHumidity.text(response.list[i].main.humidity);
+                forecastHumidity.prepend("Humidity: ");
+                forecastHumidity.append("%");
+                
+                console.log(response.list[i].dt_txt);
+                console.log(response.list[i].main.temp);
+                console.log(response.list[i].main.humidity);
+
+            }
+        });
+
     });
+
+    
 
 };
 
