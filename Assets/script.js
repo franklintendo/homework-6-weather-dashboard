@@ -35,7 +35,7 @@ $(document).on("submit", function(){
 
 // Clicking the search button will trigger
 // value added to search history
-searchCityButton.on("click", function(){
+searchCityButton.on("click", function(event){
     event.preventDefault();
 
     // Grab value entered into search bar 
@@ -58,11 +58,12 @@ clearHistoryButton.on("click", function(){
 
 // Clicking on a button in the search history sidebar
 // will populate the dashboard with info on that city
-$('.city-btn').on("click", function() {
+searchHistoryList.on("click","li.city-btn", function(event) {
     // console.log($(this).data("value"));
     var value = $(this).data("value");
     currentConditionsRequest(value);
-    
+    searchHistory(value); 
+
 });
 
 
@@ -78,7 +79,7 @@ function currentConditionsRequest(searchValue) {
         url: queryURL,
         method: "GET"
     }).then(function(response){
-        // console.log(response);
+        console.log(response);
         currentCity.text(response.name);
         currentTemp.text(response.main.temp);
         currentTemp.append("&deg;F");
@@ -87,6 +88,7 @@ function currentConditionsRequest(searchValue) {
 
         var lat = response.coord.lat;
         var lon = response.coord.lon;
+        var countryCode = response;
 
         var UVurl = "http://api.openweathermap.org/data/2.5/uvi?&lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
         $.ajax({
@@ -100,7 +102,7 @@ function currentConditionsRequest(searchValue) {
 
     });
 
-}
+};
 
 // Display and save the search history of cities
 function searchHistory(searchValue) {
@@ -170,5 +172,4 @@ function showClear() {
         clearHistoryButton.removeClass("hide");
     }
 }
-// console.log(searchHistoryList.text());
-// console.log(cityList);
+
