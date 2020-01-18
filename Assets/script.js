@@ -10,6 +10,8 @@ var currentHumidity = $("#current-humidity");
 var currentWindSpeed = $("#current-wind-speed");
 var UVindex = $("#uv-index");
 
+var weatherContent = $("#weather-content");
+
 // Get access to the OpenWeather API
 var APIkey = "a17e1499228be1f9c294ac18b234c7d7";
 
@@ -180,6 +182,7 @@ function searchHistory(searchValue) {
             // List all of the cities in user history
             listArray();
             clearHistoryButton.removeClass("hide");
+            weatherContent.removeClass("hide");
         } else {
             // Remove the existing value from
             // the array
@@ -194,6 +197,7 @@ function searchHistory(searchValue) {
             // of the search history
             listArray();
             clearHistoryButton.removeClass("hide");
+            weatherContent.removeClass("hide");
         }
     }
     // console.log(cityList);
@@ -213,6 +217,7 @@ function listArray() {
     });
     // Update city list history in local storage
     localStorage.setItem("cities", JSON.stringify(cityList));
+    
 }
 
 // Grab city list string from local storage
@@ -228,6 +233,7 @@ function initalizeHistory() {
         // if page is refreshed
         if (cityList.length !== 0) {
             currentConditionsRequest(cityList[lastIndex]);
+            weatherContent.removeClass("hide");
         }
     }
 }
