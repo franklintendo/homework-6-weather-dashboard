@@ -90,7 +90,7 @@ function currentConditionsRequest(searchValue) {
         currentCity.text(response.name);
         currentCity.append("<small class='text-muted' id='current-date'>");
         $("#current-date").text("(" + currentDate + ")");
-        currentCity.append("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='" + response.weather[0].main + "' />" )
+        currentCity.append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='" + response.weather[0].main + "' />" )
         currentTemp.text(response.main.temp);
         currentTemp.append("&deg;F");
         currentHumidity.text(response.main.humidity + "%");
@@ -100,7 +100,7 @@ function currentConditionsRequest(searchValue) {
         var lon = response.coord.lon;
         
 
-        var UVurl = "http://api.openweathermap.org/data/2.5/uvi?&lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
+        var UVurl = "https://api.openweathermap.org/data/2.5/uvi?&lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
         // AJAX Call for UV index
         $.ajax({
             url: UVurl,
@@ -144,7 +144,7 @@ function currentConditionsRequest(searchValue) {
                 forecastCardBody.append(forecastTemp);
                 forecastCardBody.append(forecastHumidity);
                 
-                forecastIcon.attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
+                forecastIcon.attr("src", "https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
                 forecastIcon.attr("alt", response.list[i].weather[0].main)
                 forecastDate.text(forecastDateString);
                 forecastTemp.text(response.list[i].main.temp);
