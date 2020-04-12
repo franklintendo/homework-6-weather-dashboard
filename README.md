@@ -20,7 +20,7 @@ I want to see the weather outlook for multiple cities
 so that I can plan a trip accordingly
 ```
 
-How do you deliver this? Here are some guidelines:
+## Further Information
 
 * Uses the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities.
 
@@ -56,7 +56,7 @@ How do you deliver this? Here are some guidelines:
 
   * Humidity
 
-* Uses `localStorage` to store any persistent data (loads last searched city forecast on page load and search history).
+* Uses `localStorage` to bring up last searched city forecast and search history on page load).
 
 <a href="https://franklintendo.github.io/homework-6-weather-dashboard/" target="_blank">Click here</a> to view the project.
 
